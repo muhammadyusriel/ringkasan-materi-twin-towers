@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ringkasan Materi</title>
+  <!-- Huruf serif untuk judul (Literata). Tanpa internet, otomatis diganti Georgia. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Bilah menu atas: tetap menempel di atas saat halaman digulir -->
+  <nav class="site-nav" aria-label="Menu utama">
+    <div class="container nav-inner">
+      <!-- Tombol ☰ pembuka menu, di pojok kiri atas sebelum judul -->
+      <button type="button" id="menu-toggle" class="icon-button menu-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Buka menu">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+
+      <!-- Logo: tautan "#" selalu kembali ke beranda -->
+      <a class="brand" href="#">
+        <svg class="brand-mark" viewBox="0 0 120 100" aria-hidden="true">
+          <path d="M22 94 V32 Q35 10 48 32 V94" />
+          <path d="M72 94 V32 Q85 10 98 32 V94" />
+          <path d="M48 52 Q60 42 72 52" />
+          <path d="M12 94 H108" />
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">Ringkasan Materi</span>
+          <span class="brand-tagline">Integrasi Keilmuan Twin Towers</span>
+        </span>
+      </a>
+
+      <!-- Daftar menu; tersembunyi dan dibuka lewat tombol ☰ di kiri atas (js/menu.js) -->
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="#beranda">Beranda</a></li>
+        <li><a href="#materi">Materi</a></li>
+        <li><a href="#kuis">Kuis</a></li>
+        <li><a href="#kamus">Kamus Istilah</a></li>
+        <li><a href="#progres">Progres Belajar</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+        <!-- Garis pemisah tipis antara daftar halaman dan pilihan tema -->
+        <li class="nav-menu-divider" aria-hidden="true"></li>
+        <!-- Pilihan mode gelap/terang: ikon dan tulisannya diatur js/tema.js -->
+        <li>
+          <button type="button" id="theme-toggle" class="nav-theme theme-toggle">
+            <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+            </svg>
+            <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" />
+            </svg>
+            <span id="theme-label">Mode gelap</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Bagian pembuka (hero): hanya tampil di beranda, disembunyikan saat membaca bab (js/beranda.js) -->
+  <header id="hero" class="hero">
+    <!-- Latar hidup (hiasan): tiga gumpalan cahaya yang bergerak pelan dan pola titik samar -->
+    <div class="hero-backdrop" aria-hidden="true">
+      <span class="hero-glow hero-glow-1"></span>
+      <span class="hero-glow hero-glow-2"></span>
+      <span class="hero-glow hero-glow-3"></span>
+    </div>
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">Ringkasan Buku Ajar</p>
+        <!-- "Bab demi Bab." diberi sorotan kuning yang tergambar perlahan (lihat .hero-highlight di style.css) -->
+        <h1 class="hero-title">Pahami Integrasi Keilmuan Twin Towers, <span class="hero-highlight">Bab demi Bab.</span></h1>
+        <!-- Kata "seluruh" diganti jumlah bab dari data oleh js/beranda.js -->
+        <p class="hero-lead">
+          Ringkasan <span id="hero-chapter-count">seluruh</span> bab buku ajar, lengkap dengan poin kunci,
+          istilah penting, dan kuis berpembahasan. Belajar di laptop atau ponsel; progres Anda tersimpan
+          otomatis di perangkat.
+        </p>
+        <div class="hero-actions">
+          <!-- Tulisan dan tujuan tombol kuning diatur js/beranda.js sesuai progres belajar -->
+          <a id="hero-start" class="button button-primary" href="#materi">Mulai Belajar</a>
+          <a class="button button-secondary" href="#materi">Lihat Semua Bab</a>
+        </div>
+        <!-- Angka ringkas (jumlah bab, soal, poin kunci), diisi js/beranda.js -->
+        <ul id="hero-stats" class="hero-stats" hidden></ul>
+
+        <!-- Kartu "Lanjutkan Belajar": lingkaran progres dan bab berikutnya; isi dan tujuannya diatur js/beranda.js -->
+        <a id="resume-card" class="resume-card" href="#" hidden>
+          <span class="resume-ring-wrap">
+            <svg class="resume-ring" viewBox="0 0 64 64" aria-hidden="true">
+              <circle class="resume-ring-track" cx="32" cy="32" r="28" />
+              <!-- Busur biru: panjangnya sesuai persentase bab yang selesai, mulai dari atas (diputar -90 derajat) -->
+              <circle id="resume-ring-fill" class="resume-ring-fill" cx="32" cy="32" r="28" transform="rotate(-90 32 32)" />
+            </svg>
+            <span id="resume-percent" class="resume-percent">0%</span>
+          </span>
+          <span class="resume-text">
+            <span id="resume-title" class="resume-title"></span>
+            <span id="resume-detail" class="resume-detail"></span>
+            <span id="resume-next" class="resume-next" dir="auto"></span>
+          </span>
+          <span class="resume-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <!-- Ilustrasi interaktif: ikon berputar pelan; sorot/sentuh ikon untuk melihat nama bidang ilmunya (js/beranda.js) -->
+      <figure class="hero-figure">
+        <svg class="hero-art" viewBox="0 0 440 410">
+          <circle class="hero-art-glow" cx="220" cy="205" r="122" />
+          <circle class="hero-art-orbit" cx="220" cy="205" r="175" />
+
+          <!-- Fondasi, dua menara, jendela, dan lengkung penghubung -->
+          <rect class="hero-art-base" x="122" y="300" width="196" height="14" rx="5" />
+          <path class="hero-art-tower" d="M150 300 V142 Q175 98 200 142 V300 Z" />
+          <path class="hero-art-tower" d="M240 300 V142 Q265 98 290 142 V300 Z" />
+          <path class="hero-art-line" d="M200 178 Q220 152 240 178 M200 192 H240" />
+          <path class="hero-art-line" d="M167 160 v16 M183 160 v16 M167 198 v16 M183 198 v16 M167 236 v16 M183 236 v16 M257 160 v16 M273 160 v16 M257 198 v16 M273 198 v16 M257 236 v16 M273 236 v16" />
+          <path class="hero-art-line" d="M166 300 v-16 a9 9 0 0 1 18 0 v16 M256 300 v-16 a9 9 0 0 1 18 0 v16" />
+
+          <!-- Kilau kuning sebagai aksen -->
+          <path class="hero-art-spark" d="M118 118 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z" />
+          <path class="hero-art-spark" d="M330 250 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z" />
+
+          <!-- Delapan ikon bidang ilmu berputar pelan di lingkaran luar; nama (data-label) dan penjelasannya dari buku (data-info) muncul di keterangan bawah -->
+          <g class="hero-orbit">
+            <g transform="translate(220 30)">
+              <g class="hero-badge" data-label="Ilmu Keislaman"
+                 data-info="Menara pertama: Tafsir, Hadis, Fikih, Kalam, dan Tasawuf sebagai ilmu murni, serta Ilmu Dakwah dan Tarbiyah sebagai ilmu terapan (hlm. 89–90).">
+                <circle r="27" />
+                <!-- kitab -->
+                <path transform="translate(-13.2 -13.2) scale(1.1)" d="M3 6c3-1.5 6-1.5 9 0v13c-3-1.5-6-1.5-9 0Z M12 6c3-1.5 6-1.5 9 0v13c-3-1.5-6-1.5-9 0" />
+              </g>
+            </g>
+            <g transform="translate(343.7 81.3)">
+              <g class="hero-badge" data-label="Sains"
+                 data-info="Bagian menara kedua yang memahami dunia fisik melalui pendekatan rasional-empiris dan eksperimen. Dalam ITT, arahnya untuk kesejahteraan manusia dan pelestarian lingkungan (hlm. 89, 91, 102).">
+                <circle r="27" />
+                <!-- atom -->
+                <g transform="translate(-13.2 -13.2) scale(1.1)">
+                  <circle cx="12" cy="12" r="1.6" />
+                  <ellipse cx="12" cy="12" rx="9.5" ry="3.6" />
+                  <ellipse cx="12" cy="12" rx="9.5" ry="3.6" transform="rotate(60 12 12)" />
+                  <ellipse cx="12" cy="12" rx="9.5" ry="3.6" transform="rotate(-60 12 12)" />
+                </g>
+              </g>
+            </g>
+            <g transform="translate(395 205)">
+              <g class="hero-badge" data-label="Hukum"
+                 data-info="Ilmu Fikih merumuskan hukum Islam, dan sosiologi dapat membantunya memahami konteks sosial penerapan hukum agar solusinya lebih kontekstual (hlm. 90, 94, 98).">
+                <circle r="27" />
+                <!-- timbangan hukum -->
+                <path transform="translate(-13.2 -13.2) scale(1.1)" d="M12 4v16 M7 20h10 M5 7h14 M5 7l-3 6h6Z M19 7l-3 6h6Z" />
+              </g>
+            </g>
+            <g transform="translate(343.7 328.7)">
+              <g class="hero-badge" data-label="Ekonomi"
+                 data-info="Ekonomi Islam lahir dari pertautan dua menara: ekonomi menjadi pokok bahasan, sedangkan fikih atau syariah menjadi pendekatannya (hlm. 93).">
+                <circle r="27" />
+                <!-- grafik ekonomi -->
+                <path transform="translate(-13.2 -13.2) scale(1.1)" d="M3 20h18 M5 20v-7 M10 20V8 M15 20v-5 M20 20V4" />
+              </g>
+            </g>
+            <g transform="translate(220 380)">
+              <g class="hero-badge" data-label="Teknologi"
+                 data-info="Bersama sains, berada di menara kedua dan mengembangkan aplikasi untuk kebutuhan manusia. Contoh integrasinya: teknologi ramah lingkungan berdasarkan etika Islam (hlm. 91, 101).">
+                <circle r="27" />
+                <!-- tabung uji -->
+                <path transform="translate(-13.2 -13.2) scale(1.1)" d="M9 3h6 M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3 M7.5 15h9" />
+              </g>
+            </g>
+            <g transform="translate(96.3 328.7)">
+              <g class="hero-badge" data-label="Kesehatan"
+                 data-info="Ilmu Kedokteran dan Ilmu Kesehatan Masyarakat termasuk menara kedua. Contoh integrasinya: tesis tentang penyakit mata Nabi Ya'qub yang dikaji dari sisi tafsir dan kedokteran (hlm. 91, 174).">
+                <circle r="27" />
+                <!-- hati (kesehatan) -->
+                <path transform="translate(-13.2 -13.2) scale(1.1)" d="M12 20s-7.5-4.5-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.5 12 20 12 20Z" />
+              </g>
+            </g>
+            <g transform="translate(45 205)">
+              <g class="hero-badge" data-label="Ilmu Sosial"
+                 data-info="Bersama humaniora, berada di menara kedua. Pendekatannya empiris-induktif melalui observasi, survei, dan wawancara, dan arah integrasinya membangun masyarakat yang lebih adil dan berkeadaban (hlm. 89, 91, 102).">
+                <circle r="27" />
+                <!-- orang (ilmu sosial) -->
+                <path transform="translate(-13.2 -13.2) scale(1.1)" d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5 M17 11a2.5 2.5 0 1 0 0-5 M16.5 14.2c2.8.3 4.5 2 4.5 4.8" />
+              </g>
+            </g>
+            <g transform="translate(96.3 81.3)">
+              <g class="hero-badge" data-label="Humaniora"
+                 data-info="Bersama ilmu sosial, berada di menara kedua dan mengkaji kehidupan manusia, budaya, dan pemikiran. Humaniora profetik mengkaji budaya dan seni untuk pencerahan dan pembentukan karakter mulia (hlm. 89, 91).">
+                <circle r="27" />
+                <!-- bola dunia -->
+                <path transform="translate(-13.2 -13.2) scale(1.1)" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z M3 12h18 M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z" />
+              </g>
+            </g>
+          </g>
+        </svg>
+        <!-- aria-live: perubahan isi kotak ini dibacakan oleh pembaca layar -->
+        <figcaption id="hero-caption" class="hero-caption" aria-live="polite">
+          <span id="hero-caption-title" class="hero-caption-title">Klik atau sentuh ikon untuk melihat penjelasannya</span>
+          <span id="hero-caption-info" class="hero-caption-info" hidden></span>
+        </figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <!-- Isi utama: halaman-halaman menu dan halaman bab; hanya satu yang terlihat dalam satu waktu -->
+  <main class="container">
+    <!-- Halaman-halaman menu (Materi, Kuis, Progres Belajar, Tentang).
+         js/menu.js menampilkan satu halaman saja sesuai alamat, misalnya #materi atau #kuis.
+         Halaman Beranda adalah bagian pembuka (hero) di atas. -->
+    <section id="list-view">
+      <!-- Halaman Materi -->
+      <div class="page" data-page="materi">
+        <h2 id="materi" class="section-title">Materi</h2>
+        <p class="section-lead">Pilih bab untuk membaca ringkasan lengkapnya.</p>
+
+        <!-- Kotak cari; disembunyikan oleh js/daftar.js jika data kosong -->
+        <div id="filters" class="filters">
+          <label class="filter-field">
+            <span class="filter-label">Cari</span>
+            <input type="search" id="search-input" dir="auto" placeholder="Cari judul atau isi bab…">
+          </label>
+        </div>
+
+        <p id="summary-count" class="summary-count"></p>
+        <!-- Keterangan warna tema bab; warnanya diatur di style.css, disembunyikan js/daftar.js jika data kosong -->
+        <ul id="theme-legend" class="theme-legend" aria-label="Keterangan warna bab">
+          <li class="theme-konsep"><span class="theme-dot"></span>Konsep dan filosofi</li>
+          <li class="theme-pola"><span class="theme-dot"></span>Pola integrasi</li>
+          <li class="theme-gerak-ganda"><span class="theme-dot"></span>Gerak ganda</li>
+          <li class="theme-proyek"><span class="theme-dot"></span>Proyek</li>
+        </ul>
+        <div id="summary-list"></div>
+      </div>
+
+      <!-- Halaman Kuis -->
+      <div class="page" data-page="kuis" hidden>
+        <!-- Bagian Kuis; diisi js/kuis.js (jika belum ada soal, tertulis "Belum ada kuis.") -->
+        <section id="kuis" class="quiz-overview" aria-labelledby="kuis-title" hidden>
+          <h2 id="kuis-title" class="section-title">Kuis</h2>
+          <p class="section-lead">Uji pemahaman Anda di setiap bab. Skor terbaik tersimpan di perangkat Anda.</p>
+          <p id="quiz-summary" class="quiz-summary"></p>
+          <ul id="quiz-list" class="quiz-list"></ul>
+        </section>
+      </div>
+
+      <!-- Halaman Kamus Istilah; diisi js/kamus.js (jika belum ada istilah, tertulis "Belum ada istilah.") -->
+      <div class="page" data-page="kamus" hidden>
+        <h2 id="kamus" class="section-title">Kamus Istilah</h2>
+        <p class="section-lead">Semua istilah penting dari setiap bab. Klik nama bab untuk membacanya.</p>
+
+        <div id="glossary-filters" class="filters">
+          <label class="filter-field">
+            <span class="filter-label">Cari</span>
+            <input type="search" id="glossary-search" dir="auto" placeholder="Cari istilah atau artinya…">
+          </label>
+        </div>
+
+        <p id="glossary-count" class="summary-count"></p>
+        <div id="glossary-list"></div>
+      </div>
+
+      <!-- Halaman Progres Belajar -->
+      <div class="page" data-page="progres" hidden>
+        <!-- Bagian Progres Belajar; diisi js/progres.js (jika data kosong, tertulis "Belum ada bab.") -->
+        <section id="progres" class="progress-section" aria-labelledby="progres-title" hidden>
+          <h2 id="progres-title" class="section-title">Progres Belajar</h2>
+          <p class="section-lead">Klik nomor bab untuk membukanya.</p>
+
+          <div id="progress" class="progress">
+            <p id="progress-text" class="progress-text"></p>
+            <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+            <!-- Kotak nomor bab: biru penuh dengan ✓ jika selesai, bergaris jika belum -->
+            <ul id="progress-chapters" class="progress-chapters"></ul>
+            <p class="progress-legend">
+              <span class="legend-swatch is-done"></span> selesai
+              <span class="legend-swatch"></span> belum
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Halaman Tentang: info buku, cara memakai, dan keunggulan -->
+      <div class="page" data-page="tentang" hidden>
+        <!-- Bagian Tentang: info buku dan cara memakai situs (teks tetap) -->
+        <section id="tentang" class="about" aria-labelledby="tentang-title">
+          <h2 id="tentang-title" class="section-title">Tentang</h2>
+          <div class="about-grid">
+            <article class="about-card">
+              <h3 class="about-heading">Tentang Buku</h3>
+              <dl class="about-book">
+                <div>
+                  <dt>Judul</dt>
+                  <dd>Integrasi Keilmuan Twin Towers (Buku Ajar)</dd>
+                </div>
+                <div>
+                  <dt>Penulis</dt>
+                  <dd>Ahmad Fauzi dkk.</dd>
+                </div>
+                <div>
+                  <dt>Penerbit</dt>
+                  <dd>UINSA Press</dd>
+                </div>
+              </dl>
+              <p class="about-note">
+                Ringkasan ini disusun untuk membantu belajar dan tidak menggantikan buku ajar. Untuk pembahasan
+                lengkap, rujuk nomor halaman yang dicantumkan di setiap ringkasan dan soal.
+              </p>
+            </article>
+
+            <article class="about-card">
+              <h3 class="about-heading">Cara Memakai</h3>
+              <!-- Memakai gaya daftar bernomor yang sama dengan "Poin Kunci"; teks dibungkus span agar tautan tetap sebaris -->
+              <ol class="key-points">
+                <li><span>Pilih bab di bagian <a href="#materi">Materi</a>.</span></li>
+                <li><span>Baca ringkasan, poin kunci, dan istilah penting.</span></li>
+                <li><span>Kerjakan <a href="#kuis">kuis</a> di akhir bab untuk menguji pemahaman.</span></li>
+                <li><span>Tekan <strong>Tandai selesai dibaca</strong>. Progres dan skor tersimpan di perangkat ini; jika data browser dihapus atau Anda berganti perangkat, progres mulai dari awal.</span></li>
+              </ol>
+            </article>
+          </div>
+        </section>
+
+        <section class="features" aria-labelledby="features-title">
+          <h2 id="features-title" class="section-title">Belajar Lebih Terarah</h2>
+          <p class="section-lead">Semua yang Anda perlukan untuk memahami buku ajar, dalam satu tempat.</p>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <span class="feature-icon">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 6c3-1.5 6-1.5 9 0v13c-3-1.5-6-1.5-9 0Z M12 6c3-1.5 6-1.5 9 0v13c-3-1.5-6-1.5-9 0" />
+                </svg>
+              </span>
+              <h3 class="feature-title">Ringkasan per Bab</h3>
+              <p class="feature-text">Inti setiap bab ditulis ulang dengan bahasa yang ringkas, lengkap dengan nomor halaman buku sebagai rujukan.</p>
+            </article>
+
+            <article class="feature-card">
+              <span class="feature-icon">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 6h11 M9 12h11 M9 18h11 M4.5 6h.01 M4.5 12h.01 M4.5 18h.01" />
+                </svg>
+              </span>
+              <h3 class="feature-title">Poin Kunci &amp; Istilah</h3>
+              <p class="feature-text">Poin-poin penting dan arti istilah kunci membantu Anda mengulang materi dengan cepat.</p>
+            </article>
+
+            <article class="feature-card">
+              <span class="feature-icon">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z M8 12.5l2.7 2.7L16 9.8" />
+                </svg>
+              </span>
+              <h3 class="feature-title">Kuis Berpembahasan</h3>
+              <p class="feature-text">Soal pilihan ganda di setiap bab, langsung dinilai dan disertai pembahasan serta halaman rujukan.</p>
+            </article>
+
+            <article class="feature-card">
+              <span class="feature-icon">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 20h18 M5 16l5-5 4 3 6-7 M15 7h5v5" />
+                </svg>
+              </span>
+              <h3 class="feature-title">Progres Tersimpan</h3>
+              <p class="feature-text">Tandai bab yang sudah dibaca; progres dan skor terbaik kuis tersimpan di perangkat Anda tanpa perlu akun.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Tampilan detail: diisi satu ringkasan oleh app.js saat kartu diklik -->
+    <section id="detail-view" hidden></section>
+  </main>
+
+  <!-- Tombol "Kembali ke atas": muncul setelah halaman digulir cukup jauh (js/baca.js) -->
+  <button type="button" id="back-to-top" class="icon-button back-to-top" aria-label="Kembali ke atas" title="Kembali ke atas" hidden>
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 19V5 M5 12l7-7 7 7" />
+    </svg>
+  </button>
+
+  <!-- Keterangan pengembang: satu baris di bagian bawah semua halaman -->
+  <footer class="site-credit">
+    <p class="container">
+      Dikembangkan oleh <strong>Muhammad Yusriel Amien, S.Ag.</strong>
+      <span class="credit-detail">(Mahasiswa S2 Ilmu Hadis Tahun 2026 UINSA Surabaya)</span>
+    </p>
+    <!-- Nomor versi: samakan dengan nomor terbitan Artifact dan tanggalnya setiap kali aplikasi diterbitkan ulang -->
+    <p class="container site-version">Versi 50 · 5 November 2026</p>
+  </footer>
+
+  <!-- Jendela ucapan selamat setelah satu bab ditandai selesai; isinya diisi js/progres.js.
+       Memakai bingkai emas yang sama dengan ucapan pembuka (kelas ornate-*). -->
+  <dialog id="congrats-dialog" class="ornate" aria-labelledby="congrats-title" aria-describedby="congrats-motivation">
+    <div class="ornate-stage">
+      <div id="congrats-confetti" class="confetti-layer" aria-hidden="true"></div>
+
+      <div class="ornate-card">
+        <div class="ornate-frame">
+          <svg class="ornate-corner ornate-corner-tl" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" /><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" />
+          </svg>
+          <svg class="ornate-corner ornate-corner-tr" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" /><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" />
+          </svg>
+          <svg class="ornate-corner ornate-corner-bl" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" /><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" />
+          </svg>
+          <svg class="ornate-corner ornate-corner-br" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" /><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" />
+          </svg>
+
+          <!-- Bagian atas biru: lencana (bintang berputar + centang), ucapan, judul, dan nama bab -->
+          <div class="ornate-head">
+            <span class="ornate-badge" aria-hidden="true">
+              <span class="ornate-emblem">
+                <svg viewBox="0 0 64 64">
+                  <rect x="14" y="14" width="36" height="36" />
+                  <rect x="14" y="14" width="36" height="36" transform="rotate(45 32 32)" />
+                </svg>
+              </span>
+              <svg class="ornate-check" viewBox="0 0 64 64"><path d="M22 33 L29 40 L43 25" /></svg>
+            </span>
+            <p id="congrats-kicker" class="ornate-kicker ornate-reveal"></p>
+            <h2 id="congrats-title" class="ornate-title ornate-reveal"></h2>
+            <p id="congrats-chapter" class="ornate-subtitle ornate-reveal" dir="auto"></p>
+          </div>
+
+          <!-- Bagian bawah: motivasi, hiasan pemisah, dalil, dan tombol -->
+          <div class="ornate-body">
+            <p id="congrats-motivation" class="ornate-text ornate-reveal"></p>
+            <div class="ornate-divider ornate-reveal" aria-hidden="true">
+              <span class="ornate-divider-line"></span>
+              <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" /></svg>
+              <span class="ornate-divider-line"></span>
+            </div>
+            <figure class="ornate-quote ornate-reveal">
+              <p id="congrats-arab" class="ornate-arab" lang="ar" dir="rtl"></p>
+              <p id="congrats-quote-text" class="ornate-translation" dir="auto"></p>
+              <figcaption id="congrats-quote-ref" class="ornate-ref"></figcaption>
+            </figure>
+            <div class="ornate-actions ornate-reveal">
+              <a id="congrats-next" class="button button-primary" href="#">Lanjut</a>
+              <button type="button" id="congrats-close" class="ornate-later">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Kartu "Semangat!" yang muncul saat kotak bab di Materi diklik; isinya diisi js/sambutan.js -->
+  <dialog id="welcome-dialog" class="welcome" aria-labelledby="welcome-title">
+    <div class="welcome-card">
+      <!-- Bagian atas: pita biru dengan menara kembar, lengkung, dan kilau kuning (hiasan) -->
+      <div class="welcome-banner">
+        <svg class="welcome-art" viewBox="0 0 240 120" aria-hidden="true">
+          <circle class="welcome-art-glow" cx="120" cy="70" r="52" />
+          <path class="welcome-art-tower" d="M88 112 V50 Q101 28 114 50 V112 Z" />
+          <path class="welcome-art-tower" d="M126 112 V50 Q139 28 152 50 V112 Z" />
+          <path class="welcome-art-line" d="M114 66 Q120 58 126 66 M96 62 v8 M106 62 v8 M134 62 v8 M144 62 v8 M96 82 v8 M106 82 v8 M134 82 v8 M144 82 v8 M74 112 H166" />
+          <path class="welcome-art-spark" d="M58 34 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z" />
+          <path class="welcome-art-spark" d="M184 58 l2.4 6 6 2.4 -6 2.4 -2.4 6 -2.4 -6 -6 -2.4 6 -2.4 Z" />
+          <path class="welcome-art-spark" d="M170 18 l1.8 4.5 4.5 1.8 -4.5 1.8 -1.8 4.5 -1.8 -4.5 -4.5 -1.8 4.5 -1.8 Z" />
+        </svg>
+        <p id="welcome-bab" class="welcome-bab"></p>
+      </div>
+
+      <!-- Bagian bawah: ucapan, judul bab, dan tombol -->
+      <div class="welcome-body">
+        <p class="welcome-greeting">Semangat! Anda akan mempelajari</p>
+        <h2 id="welcome-title" class="welcome-title" dir="auto"></h2>
+        <div class="welcome-actions">
+          <a id="welcome-start" class="button button-primary" href="#">Mulai Membaca →</a>
+          <button type="button" id="welcome-later" class="welcome-later">Nanti saja</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Ucapan pembuka: muncul sekali saat aplikasi pertama kali dibuka; isinya diisi js/salam.js.
+       Jendela ini selebar layar (transparan) supaya konfeti bisa jatuh di seluruh layar. -->
+  <dialog id="salam-dialog" class="ornate" aria-labelledby="salam-title" aria-describedby="salam-text">
+    <div class="ornate-stage">
+      <div id="salam-confetti" class="confetti-layer" aria-hidden="true"></div>
+
+      <!-- Bingkai emas di luar, kartu di dalam; bintang segi delapan di keempat sudut (hiasan) -->
+      <div class="ornate-card">
+        <div class="ornate-frame">
+          <svg class="ornate-corner ornate-corner-tl" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" /><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" />
+          </svg>
+          <svg class="ornate-corner ornate-corner-tr" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" /><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" />
+          </svg>
+          <svg class="ornate-corner ornate-corner-bl" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" /><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" />
+          </svg>
+          <svg class="ornate-corner ornate-corner-br" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" /><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" />
+          </svg>
+
+          <!-- Bagian atas biru: lambang bintang emas yang berputar pelan, lalu salam -->
+          <div class="ornate-head">
+            <span class="ornate-emblem" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <rect x="14" y="14" width="36" height="36" />
+                <rect x="14" y="14" width="36" height="36" transform="rotate(45 32 32)" />
+                <circle cx="32" cy="32" r="9" />
+              </svg>
+            </span>
+            <p class="ornate-kicker ornate-reveal">Selamat Datang</p>
+            <h2 id="salam-title" class="ornate-title ornate-reveal"></h2>
+          </div>
+
+          <!-- Bagian bawah: sambutan, hiasan pemisah, dalil, dan tombol -->
+          <div class="ornate-body">
+            <p id="salam-text" class="ornate-text ornate-reveal"></p>
+            <div class="ornate-divider ornate-reveal" aria-hidden="true">
+              <span class="ornate-divider-line"></span>
+              <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)" /></svg>
+              <span class="ornate-divider-line"></span>
+            </div>
+            <figure class="ornate-quote ornate-reveal">
+              <p id="salam-arab" class="ornate-arab" lang="ar" dir="rtl"></p>
+              <p id="salam-translation" class="ornate-translation" dir="auto"></p>
+              <figcaption id="salam-ref" class="ornate-ref"></figcaption>
+            </figure>
+            <button type="button" id="salam-start" class="button button-primary ornate-start ornate-reveal">Bismillah, Mulai Belajar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Urutan penting: data dulu, lalu fungsi bantu, lalu tiap bagian, terakhir app.js (titik awal) -->
+  <script src="data/ringkasan.js"></script>
+  <script src="data/ucapan.js"></script>
+  <script src="data/kuis.js"></script>
+  <script src="js/bantu.js"></script>
+  <script src="js/tema.js"></script>
+  <script src="js/progres.js"></script>
+  <script src="js/kuis.js"></script>
+  <script src="js/daftar.js"></script>
+  <script src="js/detail.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/beranda.js"></script>
+  <script src="js/sambutan.js"></script>
+  <script src="js/perayaan.js"></script>
+  <script src="js/salam.js"></script>
+  <script src="js/kamus.js"></script>
+  <script src="js/baca.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

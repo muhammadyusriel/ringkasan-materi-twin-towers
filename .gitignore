@@ -1,0 +1,5 @@
+# Buku ajar (PDF) tidak ikut dicatat atau diunggah
+sumber/
+
+# Pengaturan pribadi Claude Code di komputer ini
+.claude/settings.local.json
