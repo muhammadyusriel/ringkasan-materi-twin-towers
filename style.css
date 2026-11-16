@@ -1560,8 +1560,12 @@ main {
   color: var(--color-text-muted);
 }
 
-/* Nama pengembang sedikit lebih tegas dari teks di sekitarnya */
+/* Nama pengembang sedikit lebih tegas dari teks di sekitarnya,
+   dengan jarak kecil tambahan di kiri dan kanannya supaya tidak menempel pada teks di sekitarnya.
+   nowrap: nama tidak dipotong di tengah; jika tidak muat, seluruh nama turun ke baris berikutnya */
 .site-credit strong {
+  margin: 0 0.25em;
+  white-space: nowrap;
   font-weight: 600;
   color: var(--color-text);
 }
@@ -1575,10 +1579,10 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 4px 10px;
+  gap: 4px 6px;
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
