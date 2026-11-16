@@ -1564,7 +1564,7 @@ main {
    dengan jarak kecil tambahan di kiri dan kanannya supaya tidak menempel pada teks di sekitarnya.
    nowrap: nama tidak dipotong di tengah; jika tidak muat, seluruh nama turun ke baris berikutnya */
 .site-credit strong {
-  margin: 0 0.25em;
+  margin: 0 0.12em;
   white-space: nowrap;
   font-weight: 600;
   color: var(--color-text);
