@@ -148,6 +148,16 @@ Jangan menyatakan sebuah langkah "selesai" hanya karena kodenya terlihat benar. 
 - Folder `sumber/` dimasukkan ke `.gitignore` (buku ajar tidak ikut diunggah ke repositori).
 - Jangan melakukan commit atau menghapus file tanpa persetujuan saya.
 
+## Nomor versi
+
+Baris paling bawah aplikasi (di `index.html`) berbunyi `Ringkasan Materi • Versi x.y.z • © tahun`
+(tampil kapital lewat CSS). Setiap perubahan yang akan diunggah ke GitHub menaikkan nomornya:
+- Angka pertama (x): perubahan besar, misalnya buku atau mata kuliah baru. Dua angka di belakangnya jadi 0.
+- Angka kedua (y): fitur baru. Angka ketiga jadi 0.
+- Angka ketiga (z): perbaikan kecil, misalnya salah ketik atau warna.
+- Tahun di belakang © diganti saat tahun berganti.
+Usulkan nomor barunya bersama rencana perubahan, dan masukkan ke commit yang sama.
+
 ## Di luar cakupan versi 1 (jangan dikerjakan kecuali saya minta)
 
 - Tambah/ubah ringkasan lewat aplikasi, peringkasan otomatis dengan AI saat aplikasi dipakai,
