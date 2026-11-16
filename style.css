@@ -1566,10 +1566,27 @@ main {
   color: var(--color-text);
 }
 
-/* Nomor versi: lebih kecil dari keterangan pengembang */
+/* Baris versi: nama aplikasi • versi • tahun, huruf kapital kecil berjarak.
+   Kapitalnya dibuat di sini (bukan di HTML) supaya pembaca layar membacanya sebagai kata.
+   flex-wrap: jika layar terlalu sempit, bagian berikutnya turun ke baris baru, tidak terpotong. */
 .site-credit .site-version {
-  margin-top: 8px;
-  font-size: 0.75rem;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Titik pemisah kuning emas, sama dengan tombol "Mulai Belajar" (hanya hiasan) */
+.version-dot {
+  color: var(--color-cta);
+  font-size: 1rem;
+  line-height: 1;
 }
 
 /* Layar sempit: nama dan keterangannya dua baris, baris panjang dibagi seimbang,
